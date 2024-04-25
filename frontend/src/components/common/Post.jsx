@@ -41,6 +41,7 @@ const Post = ({ post }) => {
     },
     onSuccess: () => {
       toast.success("Post deleted successfully");
+      // refetch posts after deleting
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
@@ -61,17 +62,18 @@ const Post = ({ post }) => {
       }
     },
     onSuccess: (updatedLikes) => {
-      // this is not the best UX, bc it will refetch all posts
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      // it will refetch all posts.
+      // queryClient.invalidateQueries({ queryKey: ["posts"] });
 
-      // queryClient.setQueryData(["posts"], (oldData) => {
-      //   return oldData.map((p) => {
-      //     if (p._id === post._id) {
-      //       return { ...p, likes: updatedLikes };
-      //     }
-      //     return p;
-      //   });
-      // });
+      // Refetch only changed post
+      queryClient.setQueryData(["posts"], (oldData) => {
+        return oldData.map((p) => {
+          if (p._id === post._id) {
+            return { ...p, likes: updatedLikes };
+          }
+          return p;
+        });
+      });
     },
     onError: (error) => {
       toast.error(error.message);
@@ -101,6 +103,7 @@ const Post = ({ post }) => {
     onSuccess: () => {
       toast.success("Comment posted successfully");
       setComment("");
+      // refetch posts
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
     onError: (error) => {
@@ -270,7 +273,7 @@ const Post = ({ post }) => {
               </div>
             </div>
             <div className="flex w-1/3 justify-end gap-2 items-center">
-              <FaRegBookmark className="w-4 h-4 text-slate-500 cursor-pointer" />
+              <FaRegBookmark className="w-4 h-4 text-slate-500 hover:text-yellow-500 cursor-pointer" />
             </div>
           </div>
         </div>

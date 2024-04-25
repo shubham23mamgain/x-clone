@@ -22,8 +22,8 @@ const useFollow = () => {
     },
     onSuccess: () => {
       Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["suggestedUsers"] }),
-        queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+        queryClient.invalidateQueries({ queryKey: ["suggestedUsers"] }), // remove/add user from/to Suggested Users
+        queryClient.invalidateQueries({ queryKey: ["authUser"] }), // update followers and following field in authUsers
       ]);
     },
     onError: (error) => {

@@ -50,6 +50,23 @@ const ProfilePage = () => {
     },
   });
 
+  const { data: myposts } = useQuery({
+    queryKey: ["userPosts"],
+    queryFn: async () => {
+      try {
+        const res = await fetch(`/api/posts/my`);
+        const data = await res.json();
+        // console.log("My Posts", data);
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        return data;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+  });
+
   const { isUpdatingProfile, updateProfile } = useUpdateUserProfile();
 
   const isMyProfile = authUser._id === user?._id;
@@ -90,7 +107,7 @@ const ProfilePage = () => {
                 <div className="flex flex-col">
                   <p className="font-bold text-lg">{user?.fullName}</p>
                   <span className="text-sm text-slate-500">
-                    {user?.likedPosts?.length} liked posts
+                    {myposts?.length} posts
                   </span>
                 </div>
               </div>

@@ -18,6 +18,7 @@ const SignUpPage = () => {
     password: "",
   });
 
+  // We use useQuery for Fetching Data and useMutation for create,update and delete
   const queryClient = useQueryClient();
 
   const { mutate, isError, isPending, error } = useMutation({
@@ -42,10 +43,7 @@ const SignUpPage = () => {
     },
     onSuccess: () => {
       toast.success("Account created successfully");
-
-      {
-        /* Added this line below, after recording the video. I forgot to add this while recording, sorry, thx. */
-      }
+      // refetch authuser and direct send to HomePage without login
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });

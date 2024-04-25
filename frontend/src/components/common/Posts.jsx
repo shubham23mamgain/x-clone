@@ -7,15 +7,15 @@ const Posts = ({ feedType, username, userId }) => {
   const getPostEndpoint = () => {
     switch (feedType) {
       case "forYou":
-        return "/api/posts/all";
+        return "/api/posts/all"; // all posts
       case "following":
-        return "/api/posts/following";
+        return "/api/posts/following"; // all posts from people you are following
       case "posts":
-        return `/api/posts/user/${username}`;
+        return `/api/posts/user/${username}`; // all posts from a particular user
       case "likes":
-        return `/api/posts/likes/${userId}`;
+        return `/api/posts/likes/${userId}`; // all liked posts of a particular user
       default:
-        return "/api/posts/all";
+        return "/api/posts/all"; // all posts
     }
   };
 
@@ -32,8 +32,6 @@ const Posts = ({ feedType, username, userId }) => {
       try {
         const res = await fetch(POST_ENDPOINT);
         const data = await res.json();
-
-        // console.log("My data", data);
 
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");

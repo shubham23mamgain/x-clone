@@ -7,6 +7,7 @@ import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
 
 const RightPanel = () => {
+  // Fetch Suggested Users from DB
   const { data: suggestedUsers, isLoading } = useQuery({
     queryKey: ["suggestedUsers"],
     queryFn: async () => {
@@ -26,7 +27,7 @@ const RightPanel = () => {
   const { follow, isPending } = useFollow();
 
   if (suggestedUsers?.length === 0) return <div className="md:w-64 w-0"></div>;
-
+  //
   return (
     <div className="hidden lg:block my-4 mx-2">
       <div className="bg-[#16181C] p-4 rounded-md sticky top-2">
@@ -58,7 +59,7 @@ const RightPanel = () => {
                     <span className="font-semibold tracking-tight truncate w-28">
                       {user.fullName}
                     </span>
-                    <span className="text-sm text-slate-500">
+                    <span className="text-sm text-sky-400">
                       @{user.username}
                     </span>
                   </div>

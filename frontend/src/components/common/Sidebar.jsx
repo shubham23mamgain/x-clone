@@ -8,6 +8,8 @@ import { BiLogOut } from "react-icons/bi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
+// POST PUT PATCH DELETE methods use useMutation
+// GET method use useQuery
 const Sidebar = () => {
   const queryClient = useQueryClient();
   const { mutate: logout } = useMutation({
@@ -26,6 +28,7 @@ const Sidebar = () => {
       }
     },
     onSuccess: () => {
+      toast.success("Logout Successful");
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
     onError: () => {
@@ -33,6 +36,7 @@ const Sidebar = () => {
     },
   });
 
+  // Fetching Auth User for showing details
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
   return (
@@ -86,7 +90,7 @@ const Sidebar = () => {
                 <p className="text-white font-bold text-sm w-20 truncate">
                   {authUser?.fullName}
                 </p>
-                <p className="text-slate-500 text-sm">@{authUser?.username}</p>
+                <p className="text-sky-400 text-sm">@{authUser?.username}</p>
               </div>
               <BiLogOut
                 className="w-5 h-5 cursor-pointer"

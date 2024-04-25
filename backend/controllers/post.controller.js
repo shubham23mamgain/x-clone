@@ -75,7 +75,7 @@ export const commentOnPost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
-    console.log("Posted By", post.user);
+    // console.log("Posted By", post.user);
 
     const comment = { user: userId, text };
 
@@ -118,11 +118,13 @@ export const likeUnlikePost = async (req, res) => {
       await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
       await User.updateOne({ _id: userId }, { $pull: { likedPosts: postId } });
 
+      // For Optimization of Posts
+
       const updatedLikes = post.likes.filter(
         (id) => id.toString() !== userId.toString()
       );
 
-      // Later Removed from app since there will be too many likes/unlikes
+      // Later Removed from app since there will be too many likes/unlikes notifications in DB
       // const notification = new Notification({
       //   from: userId,
       //   to: post.user,
@@ -130,7 +132,7 @@ export const likeUnlikePost = async (req, res) => {
       // });
       // await notification.save();
 
-      res.status(200).json({ updatedLikes, message: "Post unliked by User" });
+      res.status(200).json(updatedLikes);
     } else {
       // Like post
       post.likes.push(userId);
@@ -145,7 +147,7 @@ export const likeUnlikePost = async (req, res) => {
       await notification.save();
 
       const updatedLikes = post.likes;
-      res.status(200).json({ updatedLikes, message: "Post liked by User" });
+      res.status(200).json(updatedLikes);
     }
   } catch (error) {
     console.log("Error in likeUnlikePost controller: ", error);
@@ -169,7 +171,7 @@ export const getMyPosts = async (req, res) => {
       });
 
     if (posts.length === 0) {
-      return res.status(200).json({ posts: [], message: "No Posts Found" });
+      return res.status(200).json([]);
     }
 
     res.status(200).json(posts);
