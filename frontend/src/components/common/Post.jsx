@@ -105,6 +105,8 @@ const Post = ({ post }) => {
       setComment("");
       // refetch posts
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+
+      // or you can also cache the comment like in like/dislike post
     },
     onError: (error) => {
       toast.error(error.message);
@@ -117,12 +119,12 @@ const Post = ({ post }) => {
 
   const handlePostComment = (e) => {
     e.preventDefault();
-    if (isCommenting) return;
+    if (isCommenting) return; //optimization if user clicks multiple times while it is still commenting
     commentPost();
   };
 
   const handleLikePost = () => {
-    if (isLiking) return;
+    if (isLiking) return; //optimization if user clicks multiple times while it is still liking/disliking
     likePost();
   };
 

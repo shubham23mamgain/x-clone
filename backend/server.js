@@ -34,7 +34,13 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-if (process.env.NODE_ENV === "production") {
+const env = process.env.NODE_ENV;
+
+if (env) {
+  console.log("Environment is ", env);
+}
+
+if (env === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
   app.get("*", (req, res) => {

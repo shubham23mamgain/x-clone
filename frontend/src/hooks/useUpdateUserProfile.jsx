@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 const useUpdateUserProfile = () => {
   const queryClient = useQueryClient();
-
+  // mutateAsync instead of mutuate to change status from Update to Edit Profile after updating cover or profile image
   const { mutateAsync: updateProfile, isPending: isUpdatingProfile } =
     useMutation({
       mutationFn: async (formData) => {
